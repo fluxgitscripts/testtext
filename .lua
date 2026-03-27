@@ -476,7 +476,7 @@ local function flyUpAndHop()
     if queue_on_teleport then
         local payload = [[
             wait(3)
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/fluxgitscripts/vending-rob/refs/heads/main/.lua"))()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/fluxgitscripts/testtext/refs/heads/main/.lua"))()
         ]]
         pcall(function() queue_on_teleport(payload) end)
     end
@@ -572,7 +572,7 @@ MainTab:AddSection({ Name = "Robbery" })
 
 MainTab:AddToggle({
     Name     = "Activate Vending Rob",
-    Default  = false,
+    Default  = true,
     Save     = false,
     Flag     = "vendingActive",
     Callback = function(Value)
