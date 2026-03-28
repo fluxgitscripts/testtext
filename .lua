@@ -441,7 +441,7 @@ local function startAutoCollect()
             task.wait(1)
         else
             loot()
-            task.wait(0.25)
+            task.wait(0.5)
         end
     end
 
