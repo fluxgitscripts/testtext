@@ -330,7 +330,7 @@ local function doServerHop(reason)
 
             vehicle.PrimaryPart = driveSeat
             local currentPos = vehicle:GetPivot().Position
-            vehicle:PivotTo(CFrame.new(Vector3.new(currentPos.X, currentPos.Y + 800, currentPos.Z)))
+            vehicle:PivotTo(CFrame.new(Vector3.new(currentPos.X, currentPos.Y + 1500, currentPos.Z)))
             driveSeat.AssemblyLinearVelocity = Vector3.zero
             driveSeat.AssemblyAngularVelocity = Vector3.zero
             task.wait(0.2)
