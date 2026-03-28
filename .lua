@@ -2,7 +2,6 @@ local CoreGui = game:GetService("CoreGui")
 local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")
 
--- FIX: LocalPlayer sofort holen, aber sicher mit WaitForChild-Fallback
 local plr = Players.LocalPlayer or Players:GetPropertyChangedSignal("LocalPlayer"):Wait() and Players.LocalPlayer
 
 local screenGui = Instance.new("ScreenGui")
@@ -151,7 +150,6 @@ RunService.RenderStepped:Connect(function()
     end
 end)
 
--- FIX: GetNetworkPing mit nil-Guard und pcall (verhindert "attempt to index nil with GetNetworkPing")
 RunService.Heartbeat:Connect(function()
     local localPlr = Players.LocalPlayer
     if not localPlr then return end
@@ -262,7 +260,6 @@ local function stopCurrentTween()
     _G.TeleportConfig.TeleportActive = false
 end
 
--- FIX: getChar komplett mit pcall gesichert (verhindert "attempt to index nil with Character")
 local function getChar()
     if not plr then return nil, nil, nil end
     local ok, char = pcall(function() return plr.Character end)
@@ -311,7 +308,6 @@ local function isPoliceNearby()
     return false
 end
 
--- FIX: isPlayerInPrison mit pcall — plr.Team wirft Fehler wenn noch nicht geladen (Line 307)
 local function isPlayerInPrison()
     if not plr then return false end
     local ok, team = pcall(function() return plr.Team end)
@@ -372,7 +368,6 @@ end
 
 local function startAutoCollect()
     if not plr then return end
-    -- FIX: Character sicher mit pcall holen
     local ok, Character = pcall(function()
         return plr.Character or plr.CharacterAdded:Wait()
     end)
@@ -465,7 +460,6 @@ _G.TeleportConfig.TweenTo = function(destination)
     if _G.TeleportConfig.TeleportActive then stopCurrentTween() end
     _G.TeleportConfig.TeleportActive = true
 
-    -- FIX: Character sicher mit pcall holen
     if not plr then _G.TeleportConfig.TeleportActive = false; return false end
     local okC, character = pcall(function()
         return plr.Character or plr.CharacterAdded:Wait()
@@ -672,7 +666,6 @@ local function hasRobbableVending()
     return false
 end
 
--- FIX: waitUntilReady — Character nie direkt indexen, immer pcall + HRP-nil-Check (Line 655)
 local function waitUntilReady()
     if not plr then return false end
 
@@ -728,7 +721,7 @@ local function startLowHpCheck()
 
             if hp <= _G.lowHpThreshold and not lowHpTriggered then
                 lowHpTriggered = true
-                notify("Low HP", "HP kritisch (" .. math.floor(hp) .. ")! Weiche aus...")
+                notify("Low HP", "HP critical (" .. math.floor(hp) .. ")! Escaping...")
 
                 local nextTarget = findNearestRobbableVending()
                 if nextTarget then
@@ -889,9 +882,9 @@ MainTab:AddToggle({
         end
         saveConfig()
         if Value then
-            notify("Low HP Escape", "Aktiviert! Flieht bei " .. _G.lowHpThreshold .. " HP.")
+            notify("Low HP Escape", "Activated! Escaping at " .. _G.lowHpThreshold .. " HP.")
         else
-            notify("Low HP Escape", "Deaktiviert.")
+            notify("Low HP Escape", "Deactivated")
         end
     end
 })
@@ -936,8 +929,8 @@ MainTab:AddSlider({
 
 MainTab:AddSlider({
     Name      = "Low HP Threshold",
-    Min       = 5,
-    Max       = 90,
+    Min       = 35,
+    Max       = 60,
     Default   = _G.lowHpThreshold,
     Color     = Color3.fromRGB(255, 255, 255),
     Increment = 5,
